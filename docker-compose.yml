@@ -96,21 +96,6 @@ services:
       - postgresdata_volume:/var/lib/postgresql/data/
     networks:
       - appNetwork
-
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=mahdi.mtibaa@gmail.com
-      - PGADMIN_DEFAULT_PASSWORD=mahdi
-    restart: unless-stopped
-    ports:
-      - "5050:80"
-    volumes:
-      - pgadmindata:/root/.pgadmin
-    networks:
-      - appNetwork
-
 volumes:
   postgresdata_volume:
   pgadmindata:
