@@ -1,0 +1,9 @@
+<settings>
+  <servers>
+    <server>
+      <id>pizza4u</id>
+      <username>admin</username>
+      <password>123456</password>
+    </server>
+  </servers>
+</settings>
