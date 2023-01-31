@@ -1,0 +1,61 @@
+app:
+  config:
+    api:
+      version: 1
+server:
+  servlet:
+    context-path: /restaurant/api/v${app.config.api.version}
+  port: 8005
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka
+
+spring:
+  application:
+    name: restaurant-manager-service
+  jpa:
+    open-in-view: false
+    generate-ddl: true
+    properties:
+      javax:
+        persistence:
+          schema-generation:
+            database:
+              action: create
+      hibernate:
+        show_sql: true
+        use_sql_comments: true
+        format_sql: true
+        generate_statistics: false
+        jdbc:
+          fetch_size: 2000
+          lob.non_contextual_creation: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        ddl-auto: create
+        hbm2dll:
+          create_namespaces: true
+        default_schema: restaurant_manager_schema
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    url: jdbc:postgresql://localhost:5432/pizzadb?currentSchema=restaurant_manager_schema
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    testWhileIdle: true
+    hikari:
+      minimumIdle: 5
+      maximumPoolSize: 20
+      idleTimeout: 30000
+      poolName: SpringBootJPAHikariCP
+      maxLifetime: 200000
+      connectionTimeout: 30000
+      connection-test-query: SELECT 1
+
+logging:
+  level:
+    '[org.springframework.data]': TRACE
+    '[org.hibernate]': TRACE
+    '[javax.persistence]': TRACE

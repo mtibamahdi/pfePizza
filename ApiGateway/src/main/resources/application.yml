@@ -1,0 +1,37 @@
+app:
+  config:
+    keycloak:
+      url: http://local.keycloak:9000/auth
+      realm: restaurant
+      client-id: pizza_client
+      client-secret: 1T6XpImT6epSULaiQH1kgXOQ5G9g5VZy
+
+server:
+  port: 8001
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+      routes:
+        - id: customer-service
+          uri: lb://customer-service
+          predicates:
+            - Path=/customers/**
+        - id: delivery-service
+          uri: lb://delivery-service
+          predicates:
+            - Path=/delivery/**
+        - id: restaurant-manager-service
+          uri: lb://restaurant-manager-service
+          predicates:
+            - Path=/restaurant/**

@@ -1,0 +1,120 @@
+version: "3.8"
+services:
+  # Eureka Service Registry
+  service-registry:
+    container_name: service_registry
+    build: ServiceRegistry
+    ports:
+      - "8761:8761"
+    networks:
+      - appNetwork
+
+  #API Gateway
+  api-gateway:
+    build: ApiGateway
+    ports:
+      - "8001:8001"
+    #restart: on-failure
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://service-registry:8761/eureka/
+    depends_on:
+      - service-registry
+    networks:
+      - appNetwork
+
+  # Restaurant Owner Service
+  restaurant-owner:
+    container_name: restaurant_owner_service
+    build: RestaurantOwner
+    ports:
+      - "8005:8005"
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://service-registry:8761/eureka/
+      - spring.datasource.url=jdbc:postgresql://postgresDb:5433/pizzadb?currentSchema=restaurant_manager_schema
+    depends_on:
+      - postgresDb
+      - service-registry
+    networks:
+      - appNetwork
+
+  # WebMaster Service
+  web-master:
+    container_name: web_master_service
+    build: WebMasterService
+    ports:
+      - "8004:8004"
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://service-registry:8761/eureka/
+      - spring.datasource.url=jdbc:postgresql://postgresDb:5433/pizzadb?currentSchema=webmaster_schema
+    depends_on:
+      - postgresDb
+      - service-registry
+    networks:
+      - appNetwork
+
+  # Customer Service
+  customer:
+    container_name: customer_service
+    build: CustomersService
+    ports:
+      - "8002:8002"
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://service-registry:8761/eureka/
+      - spring.datasource.url=jdbc:postgresql://postgresDb:5433/pizzadb?currentSchema=customer_schema
+    depends_on:
+      - postgresDb
+      - service-registry
+    networks:
+      - appNetwork
+
+  # Delivery Service
+  delivery:
+    container_name: delivery_service
+    build: DeliveryService
+    ports:
+      - "8003:8003"
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://service-registry:8761/eureka/
+      - spring.datasource.url=jdbc:postgresql://postgresDb:5433/pizzadb?currentSchema=delivery_schema
+    depends_on:
+      - postgresDb
+      - service-registry
+    networks:
+      - appNetwork
+  postgresDb:
+    image: postgres
+    container_name: postgres_database
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=pizzadb
+    ports:
+      - "5433:5433"
+    command: -p 5433
+    volumes:
+      - postgresdata_volume:/var/lib/postgresql/data/
+    networks:
+      - appNetwork
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=mahdi.mtibaa@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=mahdi
+    restart: unless-stopped
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmindata:/root/.pgadmin
+    networks:
+      - appNetwork
+
+volumes:
+  postgresdata_volume:
+  pgadmindata:
+
+networks:
+  appNetwork:
+    driver: bridge
