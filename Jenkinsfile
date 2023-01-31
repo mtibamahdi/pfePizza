@@ -38,13 +38,14 @@ pipeline{
                 sh " mvn sonar:sonar -Dsonar.host.url=$SONARQUBE_URL:$SONARQUBE_PORT"
             }
         }
+        /*
         stage('Clear Nexus Artifacts') {
             steps {
                 script {
                     sh "mvn nexus-staging:drop --settings my-settings.xml"
                 }
             }
-        }
+        }*/
         stage('Deploy Artifact To Nexus') {
             steps {
                 sh "mvn deploy -DskipTests -Dmaven.install.skip=true --settings my-settings.xml"
