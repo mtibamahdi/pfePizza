@@ -35,3 +35,12 @@ spring:
           uri: lb://restaurant-manager-service
           predicates:
             - Path=/restaurant/**
+
+management:
+  endpoint:
+    health:
+      group:
+        sanity-check:
+          include: diskSpace,ping
+          show-components: always
+          show-details: always
