@@ -129,7 +129,7 @@
     <distributionManagement>
         <repository>
             <id>pizza4u</id>
-            <url>http://local.devops:7020/repository/pizza4u/</url>
+            <url>http://host.docker.internal:7020/repository/pizza4u/</url>
         </repository>
     </distributionManagement>
 
