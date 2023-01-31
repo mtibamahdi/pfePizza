@@ -43,5 +43,14 @@ pipeline{
                 sh "mvn deploy -DskipTests -Dmaven.install.skip=true --settings my-settings.xml"
             }
         }
+        stage ('deploy to docker'){
+            steps{
+                sh '''
+                    docker-compose down
+                    docker-compose build
+                    docker-compose up -d
+                   '''
+            }
+        }
     }
 }
