@@ -45,7 +45,7 @@ pipeline{
         }
         stage('Upload Bom to Dependency-Tack') {
             steps {
-                sleep 36
+                sleep 33
                 sh '''
                 echo Uploading bom.json to "http://localhost:8055/api/v1/bom"
                 echo successfully uploading bom
@@ -54,7 +54,7 @@ pipeline{
         }
         stage('Deploy containers') {
             steps {
-                sleep 162
+                sleep 180
                 sh '''
                 echo docker-compose down
                 echo docker-compose build
