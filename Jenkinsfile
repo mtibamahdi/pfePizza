@@ -69,12 +69,11 @@ pipeline{
                     def response = ""
                     while (response != "200" && retryCount < 3) {
                         retryCount++
-                        sleep 1
-                        response = sh(returnStdout: true, script: "curl -s --head  --request GET http://localhost:8001/actuator/health/sanity-check")
+                        sleep 20
+                        sh "curl -s --head  --request GET  http://localhost:8001/actuator/health/sanity-check | grep '200'"
+                        return true
                     }
-                    if (response != "200") {
-                        error("REST API deployment failed with HTTP status code: ${response}")
-                    }
+                    return false
                 }
             }
         }
