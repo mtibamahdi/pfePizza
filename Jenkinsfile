@@ -45,7 +45,7 @@ pipeline{
         }
         stage('Upload Bom to Dependency-Tack') {
             steps {
-                sleep 37
+                sleep 33
                 sh '''
                 echo Uploading bom.json to "http://localhost:8055/api/v1/bom"
                 echo successfully uploading bom
@@ -54,7 +54,7 @@ pipeline{
         }
         stage('Deploy containers') {
             steps {
-                sleep 128
+                sleep 134
                 sh '''
                 echo docker-compose down
                 echo docker-compose build
@@ -66,7 +66,7 @@ pipeline{
             steps {
                 script {
                         sleep 15
-                        sh "curl -I http://host.docker.internal:8001/actuator/health/sanity-check"
+                        sh "curl -I http://host.docker.internal/actuator/health/sanity-check"
                 }
             }
         }
