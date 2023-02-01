@@ -66,7 +66,7 @@ pipeline{
             steps {
                 script {
                         sleep 10
-                        sh "curl -I http://localhost:8001/actuator/health/sanity-check"
+                        sh "curl -I http://pizza4u.tn:8001/actuator/health/sanity-check"
                 }
             }
         }
