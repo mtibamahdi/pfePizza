@@ -54,7 +54,7 @@ pipeline{
         }
         stage('Deploy containers') {
             steps {
-                sleep 134
+                sleep 124
                 sh '''
                 echo docker-compose down
                 echo docker-compose build
@@ -66,7 +66,7 @@ pipeline{
             steps {
                 script {
                         sleep 15
-                        sh "curl -I http://host.docker.internal/actuator/health/sanity-check"
+                        sh "curl -I http://host.docker.internal:8001/actuator/health/sanity-check"
                 }
             }
         }
