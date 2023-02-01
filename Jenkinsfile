@@ -66,7 +66,7 @@ pipeline{
             steps {
                 script {
                         sleep 10
-                        sh "curl -I http://host.docker.internal/actuator/health/sanity-check"
+                        sh "curl -I http://host.docker.internal:8001/actuator/health/sanity-check"
                 }
             }
         }
