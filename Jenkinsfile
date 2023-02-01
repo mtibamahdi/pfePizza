@@ -43,7 +43,7 @@ pipeline{
                 sh "mvn deploy -DskipTests -Dmaven.install.skip=true --settings my-settings.xml"
             }
         }
-        stage('Deploy Artifact To Nexus') {
+        stage('Deploy containers') {
             steps {
                 sleep 2
                 sh '''
