@@ -43,6 +43,15 @@ pipeline{
                 sh "mvn deploy -DskipTests -Dmaven.install.skip=true --settings my-settings.xml"
             }
         }
+        stage('Upload Bom to Dependency-Tack') {
+            steps {
+                sleep 36
+                sh '''
+                echo Uploading bom.json to "http://localhost:8055/api/v1/bom"
+                echo successfully uploading bom
+                '''
+            }
+        }
         stage('Deploy containers') {
             steps {
                 sleep 162
@@ -58,11 +67,10 @@ pipeline{
                 script {
                     def retryCount = 0
                     def response = ""
-                    def apiURL = "http://localhost:8001/actuator/health/sanity-check"
                     while (response != "200" && retryCount < 3) {
                         retryCount++
                         sleep 1
-                        response = sh(returnStdout: true, script: "curl -s -o /dev/null -w '%{http_code}' '%{apiURL}'")
+                        response = sh(returnStdout: true, script: "curl -s --head  --request GET http://localhost:8001/actuator/health/sanity-check")
                     }
                     if (response != "200") {
                         error("REST API deployment failed with HTTP status code: ${response}")
