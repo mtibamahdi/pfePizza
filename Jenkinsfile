@@ -45,7 +45,7 @@ pipeline{
         }
         stage('Deploy containers') {
             steps {
-                sleep 2
+                sleep 162
                 sh '''
                 echo docker-compose down
                 echo docker-compose build
@@ -62,7 +62,7 @@ pipeline{
                     while (response != "200" && retryCount < 3) {
                         retryCount++
                         sleep 1
-                        response = sh(returnStdout: true, script: "curl -s -o /dev/null -w '%{http_code}' ${apiURL}")
+                        response = sh(returnStdout: true, script: "curl -s -o /dev/null -w '%{http_code}' '%{apiURL}'")
                     }
                     if (response != "200") {
                         error("REST API deployment failed with HTTP status code: ${response}")
