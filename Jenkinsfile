@@ -69,11 +69,9 @@ pipeline{
                     def response = ""
                     while (response != "200" && retryCount < 3) {
                         retryCount++
-                        sleep 20
+                        sleep 10
                         sh "curl -s --head  --request GET  http://localhost:8001/actuator/health/sanity-check | grep '200'"
-                        return true
                     }
-                    return false
                 }
             }
         }
