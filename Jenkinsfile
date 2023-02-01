@@ -54,7 +54,7 @@ pipeline{
         }
         stage('Deploy containers') {
             steps {
-                sleep 156
+                sleep 120
                 sh '''
                 echo docker-compose down
                 echo docker-compose build
