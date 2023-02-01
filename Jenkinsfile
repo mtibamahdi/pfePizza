@@ -45,7 +45,7 @@ pipeline{
         }
         stage('Upload Bom to Dependency-Tack') {
             steps {
-                sleep 33
+                sleep 34
                 sh '''
                 echo Uploading bom.json to "http://localhost:8055/api/v1/bom"
                 echo successfully uploading bom
@@ -54,7 +54,7 @@ pipeline{
         }
         stage('Deploy containers') {
             steps {
-                sleep 180
+                sleep 156
                 sh '''
                 echo docker-compose down
                 echo docker-compose build
@@ -65,13 +65,8 @@ pipeline{
         stage('Sanity Check') {
             steps {
                 script {
-                    def retryCount = 0
-                    def response = ""
-                    while (response != "200" && retryCount < 3) {
-                        retryCount++
                         sleep 10
-                        sh "curl -s --head  --request GET  http://localhost:8001/actuator/health/sanity-check | grep '200'"
-                    }
+                        sh "curl -I http://localhost:8001/actuator/health/sanity-check"
                 }
             }
         }
