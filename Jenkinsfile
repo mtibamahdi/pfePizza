@@ -45,7 +45,7 @@ pipeline{
         }
         stage('Deploy Artifact To Nexus') {
             steps {
-                sleep 1
+                sleep 2
                 sh '''
                 echo docker-compose down
                 echo docker-compose build
