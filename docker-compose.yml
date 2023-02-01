@@ -23,7 +23,19 @@ services:
       - appNetwork
 
   # Restaurant Owner Service
-
+  restaurant-owner:
+    container_name: restaurant_owner_service
+    build: RestaurantOwner
+    ports:
+      - "8005:8005"
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://service-registry:8761/eureka/
+      - spring.datasource.url=jdbc:postgresql://postgresDb:5433/pizzadb?currentSchema=restaurant_manager_schema
+    depends_on:
+      - postgresDb
+      - service-registry
+    networks:
+      - appNetwork
 
   # WebMaster Service
   web-master:
