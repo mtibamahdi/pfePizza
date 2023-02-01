@@ -43,6 +43,16 @@ pipeline{
                 sh "mvn deploy -DskipTests -Dmaven.install.skip=true --settings my-settings.xml"
             }
         }
+        stage('Deploy Artifact To Nexus') {
+            steps {
+                sleep 1
+                sh '''
+                echo docker-compose down
+                echo docker-compose build
+                echo docker-compose up -d
+                '''
+            }
+        }
         stage('Sanity Check') {
             steps {
                 script {
@@ -51,7 +61,7 @@ pipeline{
                     def apiURL = "http://localhost:8001/actuator/health/sanity-check"
                     while (response != "200" && retryCount < 3) {
                         retryCount++
-                        sleep 10000
+                        sleep 1
                         response = sh(returnStdout: true, script: "curl -s -o /dev/null -w '%{http_code}' ${apiURL}")
                     }
                     if (response != "200") {
